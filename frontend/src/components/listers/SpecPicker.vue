@@ -8,10 +8,10 @@
             >
                 <v-list-item v-for="(item, idx) in list" :key="idx">
                     <template v-slot:default="{ active }">
-                        <v-list-item-avatar color="primary-darker-1">
-                        </v-list-item-avatar>
-                        
                         <v-list-item-content>
+                            <v-list-item-title>
+                                Spec #{{item._links.self.href.split('/').pop()}}
+                            </v-list-item-title>
                             <v-list-item-title>
                             </v-list-item-title>
                             <v-list-item-subtitle>
@@ -54,44 +54,59 @@
             list: [],
             selected: null,
         }),
-        async created() {
-            var me = this;
-            var temp = await axios.get(axios.fixUrl('/specs'))
-            if(temp.data) {
-                me.list = temp.data._embedded.specs;
-            }
+        // async created() {
+        //     var me = this;
+        //     var temp = await axios.get(axios.fixUrl('/specs'))
+        //     if(temp.data) {
+        //         me.list = temp.data._embedded.specs;
+        //     }
 
-            if(me.value && typeof me.value == "object" && Object.values(me.value)[0]) {
-                var id = Object.values(me.value)[0];
-                var tmpValue = await axios.get(axios.fixUrl('/specs/' + id))
-                if(tmpValue.data) {
-                    var val = tmpValue.data
-                    me.list.forEach(function(item, idx) {
-                        if(item.name == val.name) {
-                            me.selected = idx
-                        }
-                    })
+        //     if(me.value && typeof me.value == "object" && Object.values(me.value)[0]) {
+        //         var id = Object.values(me.value)[0];
+        //         var tmpValue = await axios.get(axios.fixUrl('/specs/' + id))
+        //         if(tmpValue.data) {
+        //             var val = tmpValue.data
+        //             me.list.forEach(function(item, idx) {
+        //                 if(item.name == val.name) {
+        //                     me.selected = idx
+        //                 }
+        //             })
+        //         }
+        //     }
+        // },
+        async created() {
+            try {
+                console.log("Fetching specs...");  // 디버깅용
+                const response = await axios.get(axios.fixUrl('/specs'));
+                console.log("Response:", response.data);  // 디버깅용
+                
+                if(response.data && response.data._embedded && response.data._embedded.specs) {
+                    this.list = response.data._embedded.specs;
+                } else {
+                    console.log("No specs data found");  // 디버깅용
+                    this.list = [];
                 }
+            } catch(e) {
+                console.error("Error fetching specs:", e);
+                this.list = [];
             }
         },
+        // methods: {
+        //     select(val) {
+        //         var obj = {}
+        //         if(val != undefined) {
+        //             var arr = this.list[val]._links.self.href.split('/');
+        //             obj['id'] = arr[4]; 
+        //             this.$emit('selected', obj);
+        //         }
+        //     },
+        // },
         methods: {
             select(val) {
-                var obj = {}
-                if(val != undefined) {
-                    var arr = this.list[val]._links.self.href.split('/');
-                    obj['id'] = arr[4]; 
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    this.$emit('selected', obj);
+                if(val !== undefined) {
+                    const selectedSpec = this.list[val];
+                    const specId = selectedSpec._links.self.href.split('/').pop();
+                    this.$emit('selected', { id: specId });
                 }
             },
         },

@@ -12,7 +12,7 @@ import terminalsales.infra.AbstractEvent;
 public class DiscountPolicyActivated extends AbstractEvent {
 
     private Long id;
-    private String customerId;
+    private Long customerId;
     private String productId;
 
     public DiscountPolicyActivated(Retargetting aggregate) {

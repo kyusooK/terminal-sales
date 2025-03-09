@@ -17,7 +17,7 @@
 
         <v-card-text style="background-color: white;">
             <UserId offline label="userId" v-model="value.userId" :editMode="editMode" @change="change"/>
-            <SpecId offline label="specId" v-model="value.specId" :editMode="editMode" @change="change"/>
+            <SpecId offline label="specId" v-model="value.specId" :editMode="editMode" @change="change" inList/>
         </v-card-text>
 
         <v-card-actions style="background-color: white;">
