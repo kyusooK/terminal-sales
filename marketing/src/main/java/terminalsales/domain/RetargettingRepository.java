@@ -14,7 +14,7 @@ import terminalsales.domain.*;
 public interface RetargettingRepository
     extends PagingAndSortingRepository<Retargetting, Long> {
 
-    Optional<Retargetting> findByCustomerId(String customerId);
+    Optional<Retargetting> findByCustomerId(Long customerId);
     
 }
 

@@ -37,12 +37,10 @@ public class User {
     //<<< Clean Arch / Port Method
     public static void addCoupon(DiscountPolicyActivated discountPolicyActivated) {
 
-        repository().findById(Long.valueOf(discountPolicyActivated.getCustomerId())).ifPresent(user->{
+        repository().findById(discountPolicyActivated.getCustomerId()).ifPresent(user->{
             
             user.setCoupon("20% 할인 쿠폰");
             repository().save(user);
-
-
         });
 
     }

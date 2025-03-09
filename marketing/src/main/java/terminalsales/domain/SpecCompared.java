@@ -10,6 +10,6 @@ import terminalsales.infra.AbstractEvent;
 public class SpecCompared extends AbstractEvent {
 
     private Long id;
-    private String customerId;
+    private Object userId;
     private Object specId;
 }

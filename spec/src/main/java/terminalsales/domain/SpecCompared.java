@@ -12,7 +12,7 @@ import terminalsales.infra.AbstractEvent;
 public class SpecCompared extends AbstractEvent {
 
     private Long id;
-    private String customerId;
+    private UserId userId;
     private List<SpecId> specId;
 
     public SpecCompared(SpecComparation aggregate) {

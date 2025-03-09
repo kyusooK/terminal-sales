@@ -20,7 +20,7 @@ public class Retargetting {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private String customerId;
+    private Long customerId;
 
     private String productId;
 
@@ -37,25 +37,27 @@ public class Retargetting {
     public static void increaseTargettingValue(SpecCompared specCompared) {
         ObjectMapper mapper = new ObjectMapper();
         List<Map<String, Object>> specComparationList = mapper.convertValue(specCompared.getSpecId(), List.class);
-        Map<String, Object> userMap = mapper.convertValue(specCompared.getCustomerId(), Map.class);
+        Map<String, Object> userMap = mapper.convertValue(specCompared.getUserId(), Map.class);
     
-        repository().findByCustomerId(userMap.get("id").toString()).ifPresentOrElse(retargetting -> {
+        repository().findByCustomerId(Long.valueOf(userMap.get("id").toString())).ifPresentOrElse(retargetting -> {
             // Retargetting 항목이 존재하는 경우
             retargetting.setReturnCount(retargetting.getReturnCount() + 1); 
+            retargetting.setCustomerId(Long.valueOf(userMap.get("id").toString()));
             repository().save(retargetting); 
 
             if (retargetting.getReturnCount() >= 3) {
 
-                terminalsales.external.Reservation reservation = new terminalsales.external.Reservation();
+                // terminalsales.external.Reservation reservation = new terminalsales.external.Reservation();
                 
-                reservation.setTaskId(retargetting.getId().toString());
-                reservation.setTitle("쿠폰발행");
-                // reservation.setTargetUserIds();
-                reservation.setDescription("20% 할인 쿠폰이 발행되었습니다.");
-                reservation.setNow(true);
+                // reservation.setTaskId(retargetting.getId().toString());
+                // reservation.setTitle("쿠폰발행");
+                // // reservation.setTargetUserIds();
+                // reservation.setDescription("20% 할인 쿠폰이 발행되었습니다.");
+                // reservation.setNow(true);
 
-                MarketingApplication.applicationContext.getBean(terminalsales.external.ReservationService.class)
-                    .createReservation(reservation);
+                // MarketingApplication.applicationContext.getBean(terminalsales.external.ReservationService.class)
+                //     .createReservation(reservation);
+
 
                 DiscountPolicyActivated discountPolicyActivated = new DiscountPolicyActivated(retargetting);
                 discountPolicyActivated.publishAfterCommit(); 
@@ -65,7 +67,7 @@ public class Retargetting {
         }, () -> {
             // Retargetting 항목이 존재하지 않는 경우
             Retargetting retargetting = new Retargetting();
-            retargetting.setCustomerId(userMap.get("id").toString()); 
+            retargetting.setCustomerId(Long.valueOf(userMap.get("id").toString())); 
     
             // specId에서 productId 추출 (specId가 여러 개의 맵으로 이루어진 리스트라고 가정)
             if (!specComparationList.isEmpty()) {
