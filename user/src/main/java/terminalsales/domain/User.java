@@ -37,6 +37,7 @@ public class User {
     //<<< Clean Arch / Port Method
     public static void addCoupon(DiscountPolicyActivated discountPolicyActivated) {
 
+        // discountPolicyActivated에 등록된 customerId를 통해 User에 저장된 정보중 같은 정보를 가진 id 조회
         repository().findById(discountPolicyActivated.getCustomerId()).ifPresent(user->{
             
             user.setCoupon("20% 할인 쿠폰");
