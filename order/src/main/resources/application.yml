@@ -48,6 +48,7 @@ logging:
 api:
   url: 
     order: localhost:8083 
+    spec: localhost:8082
     
 
 server:
@@ -88,5 +89,6 @@ spring:
 api:
   url: 
     order: order:8080 
+    spec: spec:8082
     
 
