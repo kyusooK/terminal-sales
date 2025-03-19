@@ -47,18 +47,6 @@ public class Retargetting {
 
             if (retargetting.getReturnCount() >= 3) {
 
-                // terminalsales.external.Reservation reservation = new terminalsales.external.Reservation();
-                
-                // reservation.setTaskId(retargetting.getId().toString());
-                // reservation.setTitle("쿠폰발행");
-                // // reservation.setTargetUserIds();
-                // reservation.setDescription("20% 할인 쿠폰이 발행되었습니다.");
-                // reservation.setNow(true);
-
-                // MarketingApplication.applicationContext.getBean(terminalsales.external.ReservationService.class)
-                //     .createReservation(reservation);
-
-
                 DiscountPolicyActivated discountPolicyActivated = new DiscountPolicyActivated(retargetting);
                 discountPolicyActivated.publishAfterCommit(); 
             }
