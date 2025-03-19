@@ -30,11 +30,6 @@ public class SalesData {
 
     private Integer price;
 
-    @PostPersist
-    public void onPostPersist() {
-        DataCollected dataCollected = new DataCollected(this);
-        dataCollected.publishAfterCommit();
-    }
 
     public static SalesDataRepository repository() {
         SalesDataRepository salesDataRepository = SalesdashboardApplication.applicationContext.getBean(
@@ -45,31 +40,12 @@ public class SalesData {
 
     //<<< Clean Arch / Port Method
     public static void collectData(OrderPlaced orderPlaced) {
-        //implement business logic here:
-
-        /** Example 1:  new item 
-        SalesData salesData = new SalesData();
-        repository().save(salesData);
-
-        */
-
-        /** Example 2:  finding and process
-        
-        // if orderPlaced.specIduserId exists, use it
-        
-        // ObjectMapper mapper = new ObjectMapper();
+         // ObjectMapper mapper = new ObjectMapper();
         // Map<Long, Object> orderMap = mapper.convertValue(orderPlaced.getSpecId(), Map.class);
         // Map<Long, Object> orderMap = mapper.convertValue(orderPlaced.getUserId(), Map.class);
-
-        repository().findById(orderPlaced.get???()).ifPresent(salesData->{
-            
-            salesData // do something
-            repository().save(salesData);
-
-
-         });
-        */
-
+        
+        DataCollected dataCollected = new DataCollected(this);
+        dataCollected.publishAfterCommit();
     }
     //>>> Clean Arch / Port Method
 
